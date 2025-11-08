@@ -1,0 +1,36 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: fhir
+    url: http://fhir:8080/fhir
+    routes:
+      - name: fhir-route
+        paths:
+          - /fhir
+        strip_path: true
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - x-api-key
+          hide_credentials: true
+
+consumers:
+  - username: apex-client
+    custom_id: "PINOTECH-APEX"
+    tags: ["frontend", "apex", "portal"]
+    keyauth_credentials:
+      - key: PINOTECH_APEX_KEY
+
+  - username: emr-client
+    custom_id: "PINOTECH-EMR"
+    tags: ["backend", "emr", "ehr"]
+    keyauth_credentials:
+      - key: PINOTECH_EMR_KEY
+
+  - username: n8n-client
+    custom_id: "PINOTECH-N8N"
+    tags: ["automation", "integration"]
+    keyauth_credentials:
+      - key: PINOTECH_N8N_KEY
