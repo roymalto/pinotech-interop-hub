@@ -17,14 +17,17 @@ services:
 
   kong:
     image: kong:3.7
+    container_name: hub-kong
+    command: ["kong", "docker-start"]
+    restart: always
     ports:
-      - "8000:8000"
-      - "8001:8001"
+      - "9000:8000"   # external:internal (proxy)
+      - "9001:8001"   # external:internal (admin)
     volumes:
-      - ./kong/kong.yml:/kong/kong.yml
+      - ./kong/kong.yml:/usr/local/kong/declarative/kong.yml
     environment:
       - KONG_DATABASE=off
-      - KONG_DECLARATIVE_CONFIG=/kong/kong.yml
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
       - KONG_PROXY_ACCESS_LOG=/dev/stdout
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr
